@@ -1,0 +1,275 @@
+date format = 'yyyy-mm-dd'
+AND operator is evaluated first than OR operator
+IN operator is the extended format of OR operator  IN ('','')
+ 
+BETWEEN operator is inclusive at boundary    BETWEEN(100,200) 
+BETWEEN operator is applied in date values also.
+ e.g  BETWEEN '1996-02-01' AND '1997-05-05'
+
+REGEXP keyword is similar to Like keyword
+IS NULL operator is used for checking null values
+
+query: select first_name,last_name 
+from customers order by 1,2
+1, 2 represents column no
+
+order by clause uses expression,  alias, column
+
+query: select first_name,last_name 
+from customers limit 6,3
+6 is offset and 3 is limit.  It is used in pagination
+ 
+===========self join example to find employee and manager=====
+select  e.employee_id, e.first_name, m.first_name from employees e
+join employees m 
+on e.reports_to = m.employee_id
+===================================================
+Inner join is named join
+
+outer join - 2 types.
+    1) left outer join
+    2) Right outer join
+
+
+====e.g of left join============
+Here we will get all records from customers table(left table)
+
+select c.customer_id,c.first_name,o.order_id
+from customers c
+left join orders o
+on c.customer_id = o.customer_id
+order by c.customer_id
+=========================================
+JOIN keyword MEANS Inner JOIN.
+
+==============Right outer join======
+Here we will get all records from orders table(Right table)
+
+select c.customer_id,c.first_name,o.order_id
+from customers c
+RIGHT join orders o
+on c.customer_id = o.customer_id
+order by c.customer_id
+=================================
+LEFT JOIN MEANS LEFT outer JOIN, outer keyword IS OPTTIONAL.
+RIGHT JOIN MEANS RIGHT outer JOIN, outer keyword IS OPTTIONAL.
+
+
+===========self OUTER join example to find employee and manager=====
+select  e.employee_id, e.first_name, m.first_name from employees e
+LEFT join employees m 
+on e.reports_to = m.employee_id
+===================================================
+
+============natural join==================
+db engine guess the common column
+
+
+select o.order_id,c.first_name
+from orders o
+natural join customers c
+===================================
+
+
+===========cross join===================
+selecting all the records from 2 tables without any condition.
+
+select 
+	c.first_name,
+    p.name
+    from customers c
+    cross join products p
+
+
+    
+select 
+	c.first_name,
+    p.name
+    from customers c, products p
+
+Both querys are same 
+=========================================
+
+============UNION====================
+UNION keyword combine results of multiple queries.
+Number of columns must be same.
+first query will decide the column name.
+======================================
+
+ select last_insert_id()
+ default keyword in sql
+
+
+ ====copy of a table=============
+  create table order_archived as
+ select * from orders
+
+   create table <<new table name>> as
+     <<subquery>>
+
+Note: In the copied table, primary key will not be created
+ ===============================
+ ==============group===========================
+ In group by clause column name must be present in select clause column_name
+ ===========================================
+
+ count(column_name) will not consider null values
+ count(*) will  consider null values
+
+==========================differencr between where  & having===========
+where is applied before grouping of columns.
+having filter is applied after grouping.
+In having clause columns must be part of select clause columns.
+=======================================================================
+
+====================WITH ROLLUP========================================
+WITH ROLLUP clause provide sum of all records at last.
+
+
+SELECT 
+    pm.name AS payment_method, SUM(amount) AS total
+FROM
+    payments p
+        JOIN
+    payment_methods pm ON p.payment_method = pm.payment_method_id
+GROUP BY pm.name WITH ROLLUP;
+=================================================================
+=========All clause================================================
+All() clause is similar to Max()  clause. It is used in subquery.
+All(),ANY(),SOME() are  used in grouping and subquery.
+====================================================================
+===========subquery==========================================
+subquery is used with where  & from clause
+==============================================================
+=======================corelated subquery=============================
+  
+select * from employees e
+where salary >(
+select AVG(salary)
+from employees
+where office_id = e.office_id
+)
+
+Here employees table is refernced in both outer and inner  query. So for each outer record, Inner query will be executed.
+It will slow down the performance. 
+
+======================================================================
+===========ExistS operator=====================
+Exists operator is similar to IN operator. It is faster than IN operator.
+================================================
+
+===============date time function====================
+select now() -> print both date & time
+ curdate() -> print date
+ curtime()  -> print time only
+
+select year(now())
+select month(now())
+select day(now())
+select HOUR(now())
+select minute(now())
+select second(now())
+
+use EXTRACT() function to fetch month,day,year etc.
+
+select extract(month from now());
+select extract(day from now());
+select extract(year from now());
+
+Formating date and time
+select DATE_FORMAT(NOW(),'%M %D %Y')
+select DATE_FORMAT(NOW(),'%H: %i %p')
+
+ STR_TO_DATE('21-01-2020','%d-%m-%YY')
+
+ 
+ TO_CHAR function is used to typecast a numeric or date input to character type with a format model (optional).
+ TO_CHAR(date, ’format_model’)
+DATEDIFF()  date diff only
+TIME_TO_SEC() - no of secs after midnight
+===========================================================
+
+=====================IFNULL====================================
+select 
+	order_id,
+    IFNULL(shipper_id,'not assigned') as shipper
+    from orders
+
+==================================================================
+
+========================COALESCE=================================
+ select 
+	concat(first_name,' ','last_name'),
+    coalesce(phone,'unknown') as phone
+    from customers
+ 
+
+select 
+ order_id,
+ COALESCE(shipper_id,comments,'Not assigned') as shipper
+ from orders
+
+
+COALESCE- returns the first not null value from list. if both shipper_id & comments are null then It will print Not assigned
+
+===================================================================
+===============if function=========================================
+   SELECT 
+    order_id,
+    order_date,
+    IF(YEAR(order_date) = YEAR(NOW()),
+        'Active',
+        'Archived') AS category
+FROM
+    orders;
+==================================================================
+
+==================create view======================================
+View is similar to table. It is stored in view section
+
+    create view sales_by_client as
+    select c.client_id,
+    c.name,
+    sum(invoice_total) as total_sales
+    from clients c
+    join invoices i using (client_id)
+    group by client_id,name
+
+    Note: with check option in view
+===================================================================
+show triggers    -> print all the triggers
+We can create  that are executed  after an insert ,update etc commands.
+
+
+SHOW variables like 'autocommit'
+
+
+===============data types=============================
+store username,password use small string-- varchar(50)
+store adress use medium size string-- varchar(255)  
+max lenngth of varchar -65,535 (64kb)
+
+char(x) fixed lenngth
+varchar(x) max: 65535 characters(64kb)
+mediumtext()  max: 16mb
+longtext max: 4gb
+tinytex max: 255bytes
+text: 64kb
+
+use varchar(x), because ,it can be indexed
+
+use decimal for storing decimal values. Float and double uses more memory
+Enum data types store a values from list.try to avoid the use of Enum. Create a new table to to handle enum situations.
+=======================================================
+========date time data type====================
+
+DATE
+TIME
+DATETIME 8 B
+TIMESTAMP  4B (UPTO 2038). iT HAS YEAR 2038 PROBLEM
+YEAR
+================================================
+
+
+
+avoid using select clause inside a select stament subquery. It can be easily replaced by join.

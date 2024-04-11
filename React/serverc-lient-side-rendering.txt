@@ -1,0 +1,12 @@
+What's a Rendering Pattern?
+
+In web development, a rendering pattern refers to the way in which the HTML, CSS, and JavaScript code is all processed and rendered in a web application or website.
+
+1) Server-side rendering (SSR): In SSR, the web server generates the HTML content of a web page on the server-side and sends it to the client's browser. This approach can improve initial loading times and SEO (search engine optimization) but can be slower for dynamic content.
+
+2) Client-side rendering (CSR): In CSR, the client's browser generates the HTML content of a web page on the client-side using JavaScript. This approach can provide a fast and interactive user experience but can be slower for initial loading times and bad for SEO.
+
+# useCallback vs useMemo
+ It is used for performence optimization.
+ useCallback: It returna a memoized function .
+ useMemo: It returns a value of  memoized function.

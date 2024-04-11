@@ -1,0 +1,47 @@
+Node.js provides asynchronous non-blocking code execution envionment.
+Node.js wraps the v8 chrome engine inside c++ program.
+# Node.js is a single threaded envionment. A single thread is responsible for handling all the request.
+# Node.js is best suitable for I/O intensive and network intensive applications. It is not suitable for heavy CPU intensive program.
+
+# variable declared with var keyword: its scope is limited to file only.
+# if varible is not declared with var keyword: its scope is global.
+#jshint command 
+
+# upper carrot sign in package.json means update minor version of package.
+# Tilde sign in package.json means update patch version of package.
+
+# set PORT = 5000 // Assigning env variables
+
+#Middleware is a function. It takes the request object and after processing request it send the response or passes the request to next Middleware.
+
+# next keyword stores the reference of next Middleware function.
+
+// get  the current envionment(NODE_ENV) by below commands
+#process.env.NODE_ENV 
+
+#app.get('env')  // Here app is the express object. It prints development by default.
+# set method is used to set the variables in express env for e.g app.set('view engine','pug')
+
+# use debug package to set the bebug level in the env.
+
+# asynchronous means non-blocking programs.
+# Promises holds the eventual result of asynchronous operation. 
+
+#Sending custom headers in response
+ res.header('x-auth-toke',token)
+
+#Statuscode:
+200  (Success/OK)
+
+ 400: Bad request.The request can be a malformed, deceptive request routing, or invalid request.
+ 401: unathorized request (jwt token is not valid. Please retry)
+ 403: Forbidden( Don't hatve the required permissiom. Do not retry). It is used for access denied scenario.
+ 404: Not found
+ 
+ 500: Internal server error. We do not know what error occured.
+ 501 (Not Implemented)
+
+ //401 Staus code: Client is not logged in.(Unauthorized)
+// 400 Status code: CustomerId is not provided.(Bad request)
+ 
+ #Error Middleware: A Middleware function for handling errors. It is used in index file.video:145

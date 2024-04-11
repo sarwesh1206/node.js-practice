@@ -1,0 +1,8 @@
+storage class in s3.
+roles and permission in IAM
+types of policy in IAM.
+partion key in dynamo db.
+custom error in node.js
+comparison of promises and callback and async-await.
+streams in node.js
+process.exit() in node.js

@@ -1,0 +1,17 @@
+https://www.youtube.com/watch?v=esISkPlnxL0
+
+orchestrator: Manage the lifrcycle of containers create/destroy/restart and autoscaling
+
+ECS has two launch types: EC2 & Fargate.
+ECS does not have any compute power. It can only manage container.
+
+#EC2 launch type: We have to manage the EC2 resouces. ECS maage the container using ECS control plane. We have full control over infra.
+
+Fargate type: 
+ AWS manage the underlying resouces. Fargate will create the servers on demand. 
+ No need to provision/maintain EC2 servers.
+ It follows a serverless architecture.
+
+Cluster is a bunch of resources like ec2. cluster is the underlying resources on which the container is deployed
+
+ECS tasks: How the container will be deployed. It is an instance of task definition.

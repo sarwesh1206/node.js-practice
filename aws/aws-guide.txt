@@ -1,0 +1,33 @@
+# x-api-key in header of postman for using API Key provided by AWS
+
+=============dynamo DB====================================
+All dynamo db Tables has primary key. Dynamo has manadatory primary key. Primary key has maximum 2 attributes. Primary makes the Dynamo DB faster in reading the records. Manadatory key is called partitionon/hash and optional attribute is sort/range key.
+primary key = partition key + sort key
+
+=============================================================
+
+=====================SQS============================================================
+Payload Size: Message payloads can contain up to 256KB of text in any format. Each 64KB ‘chunk’ of payload is billed as 1 request.
+Retain messages in queues for up to 14 days.
+
+A dead-letter queue is a queue that one or more source queues can use for messages that are not consumed successfully.
+
+To configure the number of times that a message can be received before being sent to a dead-letter queue, set Maximum receives to a value between 1 and 1,000.
+
+The redrive policy specifies the source queue, the dead-letter queue, and the conditions under which Amazon SQS moves messages from the former to the latter if the consumer of the source queue fails to process a message a specified number of times. The maxReceiveCount is the number of times a consumer tries receiving a message from a queue without deleting it before being moved to the dead-letter queue. Setting the maxReceiveCount to a low value such as 1 would result in any failure to receive a message to cause the message to be moved to the dead-letter queue. Such failures include network errors and client dependency errors. To ensure that your system is resilient against errors, set the maxReceiveCount high enough to allow for sufficient retries.
+
+The main task of a dead-letter queue is to handle the lifecycle of unconsumed messages.
+========================================================================
+
+==============storage class in s3==============================================================================
+Each object in Amazon S3 has a storage class associated with it. For example, if you list the objects in an S3 bucket, the console shows the storage class for all the objects in the list. Amazon S3 offers a range of storage classes for the objects that you store. You choose a class depending on your use case scenario and performance access requirements. All of these storage classes offer high durability.
+
+S3 Standard – The default storage class. If you don't specify the storage class when you upload an object, Amazon S3 assigns the S3 Standard storage class.
+
+S3 Intelligent-Tiering 
+============================================================================================================
+
+==================VM & container===============================================================================
+Virtual machine is the virtualization of a hardware machine.
+containers contain all the software packages required for running the application.
+===============================================================================================================

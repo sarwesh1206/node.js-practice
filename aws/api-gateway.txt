@@ -1,0 +1,3 @@
+Lambda-proxy-integration:  response object is not modified in api-gatteway. It is passed as it is.For handking cors in it. We have to pass all necessary headers from server(lambda function)  only
+
+API-Key:It is enabled in api methods. It is passed in headers as x-api-key. If we do not pass in headers we get 403 response code with forbidden error.

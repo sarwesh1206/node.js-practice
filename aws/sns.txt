@@ -1,0 +1,41 @@
+https://aws.amazon.com/sns/features/
+
+Amazon Simple Notification Service (Amazon SNS) is a managed service that provides message delivery from publishers to subscribers (also known as producers and consumers). Publishers communicate asynchronously with subscribers by sending messages to a topic, which is a logical access point and communication channel. Clients can subscribe to the SNS topic and receive published messages using a supported endpoint type, such as Amazon Kinesis Data Firehose, Amazon SQS, AWS Lambda, HTTP, email, mobile push notifications, and mobile text messages (SMS).
+
+High throughput: FIFO topics support up to 300 messages per second or 10 MB per second per FIFO topic (whichever comes first).
+
+ You can publish from 1 to 10 messages per API request. You may choose to batch messages together to reduce your Amazon SNS costs. Each message can contain up to 256KB of data. If your use case requires larger data payloads, the Amazon SNS Extended Client Library stores the payload (up to 2GB) in an Amazon S3 bucket and publishes the reference of the stored Amazon S3 object to the Amazon SNS topic.
+
+ The Fanout scenario is when a message published to an SNS topic is replicated and pushed to multiple endpoints, such as Kinesis Data Firehose delivery streams, Amazon SQS queues, HTTP(S) endpoints, and Lambda functions. This allows for parallel asynchronous processing.
+
+ Message archiving and replay consists of two main components:
+
+Message archiving - The topic owner enables the archiving and replay feature on a topic, and sets a message retention period (up to 365 days). The topic owner can also monitor archived messages using Amazon CloudWatch metrics. For more, see Message archiving for FIFO topic owners.
+
+Message replay - The topic subscriber initiates a replay for a set of messages from the topic to their subscribed endpoint. For more see, Message replay for FIFO topic subscribers.
+
+
+
+#For any type of error, Amazon SNS can sideline messages to Amazon SQS dead-letter queues so data isn't lost.
+
+
+
+Note:
+https://docs.aws.amazon.com/sns/latest/dg/fifo-message-durability.html
+In Amazon SNS, message delivery fails when the Amazon SNS topic can't access a subscribed Amazon SQS queue due to a client-side or server-side error:
+
+Client-side errors occur when the Amazon SNS FIFO topic has stale subscription metadata. Two common causes of client-side errors are when the Amazon SQS queue owner does one of the following:
+
+Deletes the queue.
+
+Changes the queue policy in a way that prevents the Amazon SNS service principal from delivering messages to it.
+
+Amazon SNS doesn't retry delivering messages that failed due to client-side errors.
+
+Server-side errors can occur in these situations:
+
+The Amazon SQS service is unavailable.
+
+Amazon SQS fails to process a valid request from the Amazon SNS service.
+
+When server-side errors occur, Amazon SNS FIFO topics retry the failed deliveries up to 100,015 times over 23 days. For more information, see Amazon SNS message delivery retries.

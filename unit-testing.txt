@@ -1,0 +1,27 @@
+// In jest there is no parameterised test.
+// assertion means using the expect() function.
+// Matchers are used for comparing the result for the assertion.
+
+// create mock function. It is a function with no code.
+const mockFunction = jest.fn();
+
+// mock function will return value 1
+mockFunction.mockReturnValue(1);
+
+const result = mockFunction();
+
+// Return a promise from mock function.
+mockFunction.mockResolvedValue(1)
+mockFunction.mockRejectedValue(new Error('...'))
+const result = await mockFunction();
+
+// For each test case we have to restart the server.
+beforeEach(() => {
+    server = require('./index)})
+aftterEach(() => { server.close(); })
+
+
+
+// Number of test cases should be equal to number of execution paths
+//401 Staus code: Client is not logged in.(Unauthorized)
+// 400 Status code: CustomerId is not provided.(Bad request)

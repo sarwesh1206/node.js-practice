@@ -1,0 +1,79 @@
+Spread:
+An iterable in JavaScript is an entity that can be looped over.An array is a good example.The spread syntax takes an iterable and "spreads" out its individual elements as comma - separated values.
+
+const allNums = [ ...oddNums, ...evenNums]; // merging two array
+const evenNums = [2, 4, 6];
+const oddNums = [1, 3, 5];
+
+The spread syntax spreads out the iterable's contents and separates them by commas.
+
+Use cases
+1) Merge or concatenate arrays
+2) Convert a string to an array
+    A string is also an iterable. So by using the spread syntax, it can be easily converted to an array
+    const string = 'JavaScript';
+
+    const arrayFromString = [ ...string ];
+
+    console.log(arrayFromString)
+    // ["J", "a", "v", "a", "S", "c", "r", "i", "p", "t"]
+3) Create copies
+    const shallowCopy = [ ...baseArray ]
+    // shallowCopy contains the same items as baseArray, // but they don't point to the same memory location. // Any change made to either will not reflect in the other. const shallowCopy = [ ...baseArray ]
+
+## The Rest Parameter
+     Rest is the opposite of Spread i.e it takes comma-separated values and turns them into an array. This might be confusing at first, so let's quickly jump into an example.
+
+     const [first, second, ...others] = [1, 2, 3, 4, 5, 6, 7, 8]
+     console.log(first) // 1 
+     console.log(second) // 2
+     console.log(others) // [3, 4, 5, 6, 7, 8]
+Both Rest and Spread use the same syntax: the three dots (... )
+
+When the dots are used on an array, it spreads the array to its individual elements. It is called the spread syntax in such cases.
+
+When the dots are used on a comma-separated list, it packs the list items into an array. It is called the rest pattern in such cases.
+
+Rest in function parameters
+function printSum(...operands) {
+    console.log(operands)
+}
+
+printSum(1, 3, 4 ,100) // [1, 3, 4, 100]
+Notice how the comma-separated list has now become an array
+
+function printSum(...operands) {
+  let sum = 0;
+  for (const num of operands)
+    sum += num;
+  console.log(sum);
+}
+
+printSum(1, 3, 4, 100) // 108
+Such a function parameter that uses the spread syntax to pack incoming comma-separated items into a single array is called the rest parameter.
+The rest parameter should be the last parameter in the parameter list
+
+There should only be one rest parameter for a given function
+
+
+Rest is commonly used in destructuring and also as a rest parameter in functions that need to accept an indefinite number of arguments.
+
+Note:
+forEach doesn't have a return value, and hence cannot be chained with other array methods.
+Jump statements, like continue and break do not work inside the callback function.
+forEach is not designed to work with asynchronous JavaScript.
+
+Promise.allSettled(promises) lets you run promises in parallel and collect the statuses (either fulfilled or reject) into an aggregate array.
+
+Promise.allSettled(...) works great when you need to perform parallel and independent asynchronous operations and collect all the results even if some async operations could fail.
+
+
+The Promise.any() static method takes an iterable of promises as input and returns a single Promise. This returned promise fulfills when any of the input's promises fulfills, with this first fulfillment value.
+
+
+
+The Promise.race() static method takes an iterable of promises as input and returns a single Promise. This returned promise settles with the eventual state of the first promise that settles
+
+Also, unlike Promise.race(), which returns the first settled value (either fulfillment or rejection), this method returns the first fulfilled value
+
+Destructuring is a JavaScript expression that allows us to extract data from arrays, objects, and maps and set them into new, distinct variables. Destructuring allows us to extract multiple properties, or items, from an array​ at a time.6

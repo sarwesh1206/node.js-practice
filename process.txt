@@ -1,0 +1,8 @@
+The process object in Node.js is a global object that can be accessed inside any module without requiring it
+
+This process object is an instance of the EventEmitter class. It does it contain its own pre-defined events such as exit which can be used to know when a program in Node.js has completed its execution.
+
+function handle() {
+    console.log("testing",);
+}
+process.on('exit', handle);
