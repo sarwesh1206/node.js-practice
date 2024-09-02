@@ -1,0 +1,208 @@
+# 1) confifigure typeScript compiler config:  tsc --init 
+#) To enable debugger in ts, uncomment yhe sourceMap key in tsconfig file
+
+#) Declare variables in ts. We can skip the data type at the time of initialisation of variables.
+let age: number = 20;
+
+let myName: string = 'ranjesh'
+let employee: boolean = true;
+let num: number[]= [1,2,3,4,5,6]
+
+# Tuples are the fixed length of array.
+let user: [number,string] = [1,'ranjesh']
+
+#Enum
+enum Size { Small = 's', Medium = 'm', Large = 'l' }
+let mySize: Size= Size.Large
+
+#Function Declare
+
+function calculateTax(taxYear: number,rate : number,amount= 100,time?:number): number {
+    if (time)
+        
+    return (taxYear * rate *amount)
+}
+
+
+#Objects
+
+
+let myemployee:{
+    readonly id: number
+    name: string,
+    retire: (date:Date) =>void
+} = {
+    id:1,
+    name: 'ranjesh',
+    retire: (date: Date) => {
+        console.log(date)
+    }
+}
+
+#type  alias isused to create custom data type.
+type  Employee={
+    readonly id: number
+    name: string,
+    retire: (date:Date) =>void
+}
+
+let memployee: Employee = {
+    id: 1,
+    name: 'ranjesh',
+    retire: (date: Date) => {
+        console.log(date)
+    }
+}
+
+#union type: combining data types in function defintion
+
+function convert(weight: number | string): number {
+    //narrrowing
+    if (typeof weight === 'number')
+        return weight;
+    else {
+        return parseInt(weight)
+    }
+
+}
+
+# type intersection
+
+type Draggable = {
+    drag: ()=> void
+}
+type Resizable = {
+    resize: ()=> void
+}
+
+type Uiwidget = Resizable & Draggable;
+
+let textbox: Uiwidget = {
+    drag : ()=>{
+
+    },
+    resize: ()=>{}
+    
+}
+
+# Literal is used to restrict the value of variable.
+let quantity: 50 | 51
+
+#Optional chaining:
+
+function getCustomer(id: number): customer | null | undefined {
+    return id === 0 ? null : { birthday: new Date() }
+        
+}
+
+let customer = getCustomer(0);
+    if (customer !== null)
+    console.log(customer?.birthday?.getFullYear())
+
+# Nullish  collescase means null value(??)
+# Check type assertion
+# Read more about any & unknown & never type. use narrowing if data type  is unknown or any.
+
+#class
+return type of constructor is always the same class.
+Private propertis are initialised by _ . It is a convention. Private properties are not accessible outside class.
+
+
+    class Account {
+        readonly id: number;
+        owner: string;
+        private _balance: number;
+        nickname?: string; 
+        //optinal property
+
+        constructor(id: number, owner: string, balance: number) {
+            this.id = id;
+            this.owner = owner;
+            this._balance  = balance
+        }
+        deposit(amount: number): void{
+            this._balance = this._balance + amount;
+        }
+        getBalance(): number {
+            return this._balance
+        }
+}
+
+# Parameter property
+
+
+    class Account {
+        
+        nickname?: string; 
+        //optinal property
+
+        constructor(public id: number, public owner: string, private _balance: number) {
+            this.id = id;
+            this.owner = owner;
+            this._balance  = _balance
+        }
+        deposit(amount: number): void{
+            this._balance = this._balance + amount;
+        }
+        
+        //getter
+       get getBalance(): number {
+            return this._balance
+        }
+        //setter
+        set  setBalance(value: number) {
+             this._balance = value
+        }
+}
+
+class SeatAssignment {
+    [seatNumber: string] : string
+}
+const seat = new SeatAssignment()
+seat.A1 = "ranjesh"
+
+# index signature is used to create dynamic properties.
+
+class SeatAssignment {
+    [seatNumber: string] : string
+}
+const seat = new SeatAssignment()
+seat.A1 = "ranjesh"
+
+#Static keyword. Static properties have single instance in memory.
+
+class Ride {
+    private static _activeRide: number = 0
+
+    start() {
+        Ride._activeRide++
+    }
+    stop() {
+        Ride._activeRide--
+    }
+    static get activeRide() {
+        return Ride._activeRide
+    }
+}
+
+#Inheritance
+
+class Person{
+    constructor(public firstName: string, public lastName: string) {
+        
+    }
+    getFullName() {
+        return this.firstName + this.lastName
+    }
+}
+
+class Student extends Person{
+
+    constructor(public studentId: number, firstName: string, lastName: string) {
+        super(firstName,lastName)
+    }
+    takeTest() {
+        
+    }
+}
+const st = new Student(1,'ranjesh','singh')

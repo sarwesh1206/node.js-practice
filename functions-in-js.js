@@ -51,3 +51,7 @@ const video = {
 // }
 
 video.showTags()
+
+//======this keyword
+// 1) if function is defined inside an object then the value of this will be the the corresponding object
+// 2) if the function is normal function the value of this will be the window object

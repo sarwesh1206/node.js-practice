@@ -1,0 +1,116 @@
+//https://blog.javascripttoday.com/blog/4-design-patterns-in-node/
+// https://blog.logrocket.com/guide-node-js-design-patterns/
+
+
+Design patterns are a way for you to structure your solution’s code in a way that allows you to gain some kind of benefit, such as faster development speed, code reusability, etc.
+
+1) The factory method pattern: The Factory pattern is a creational design pattern that provides a simple way to create objects without having to specify the exact class of object that will be created.
+
+The factory method allows you to centralize the logic of creating objects (which object to create and why) in a single place
+
+function vehicleFactory(type) {
+  if (type === "car") {
+    return new Car();
+  } else if (type === "truck") {
+    return new Truck();
+  } else {
+    throw new Error(`Unsupported vehicle type: ${type}`);
+  }
+}
+
+class Car {
+  drive() {
+    console.log("Driving a car");
+  }
+}
+
+class Truck {
+  drive() {
+    console.log("Driving a truck");
+  }
+}
+
+const car = vehicleFactory("car");
+car.drive(); // Output: Driving a car
+
+const truck = vehicleFactory("truck");
+truck.drive(); // Output: Driving a truck
+
+The factory function acts as a central point of control for creating objects, making it easy to add or remove types of vehicles in the future.
+
+
+
+
+2).  Singleton pattern: The Singleton pattern is a creational design pattern that ensures that a class has only one instance, while providing a global point of access to this instance for the rest of the application.This pattern is useful in Node.js because it allows for a shared resource to be used throughout the application, without the risk of multiple instances being created. For example, a database connection can be implemented as a singleton. This ensures that only one connection is established, even if the database is accessed from multiple places in the application.
+
+This helps to reduce the overhead of establishing multiple connections, as well as providing a central point of control for the database connection.
+
+
+
+
+3). Observer pattern:  The Observer pattern is a behavioral design pattern that defines a one-to-many dependency between objects,such that when one object changes state, all its dependents are notified and updated automatically. This pattern is useful in Node.js for implementing real-time updates, such as push notifications.  
+
+
+4) The builder pattern: In this design pattern, the focus is to separate the construction of complex objects from their representation. In Node.js builder, the pattern is a way to create complex objects in a step-by-step manner
+
+Most of the time while developing a solution one has to handle too many properties. One approach is to pass all the properties in the constructor.
+If developed properly, the code will run but passing so many arguments inside the constructor will look ugly and if it’s a large-scale application, it might become unreadable over time.
+To avoid this, developers use builder design patterns. Let’s understand this by looking at an example:
+
+
+class House {
+  constructor(builder) {
+    this.bedrooms = builder.bedrooms;
+    this.bathrooms = builder.bathrooms;
+    this.kitchens = builder.kitchens;
+    this.garages = builder.garages;
+  }
+}
+class HouseBuilder {
+  constructor() {
+    this.bedrooms = 0;
+    this.bathrooms = 0;
+    this.kitchens = 0;
+    this.garages = 0;
+  }
+  setBedrooms(bedrooms) {
+    this.bedrooms = bedrooms;
+    return this;
+  }
+  setBathrooms(bathrooms) {
+    this.bathrooms = bathrooms;
+    return this;
+  }
+  setKitchens(kitchens) {
+    this.kitchens = kitchens;
+    return this;
+  }
+  setGarages(garages) {
+    this.garages = garages;
+    return this;
+  }
+  build() {
+    return new House(this);
+  }
+}
+
+const house1 = new HouseBuilder()
+  .setBedrooms(3)
+  .setBathrooms(2)
+  .setKitchens(1)
+  .setGarages(2)
+  .build();
+
+console.log(house1); // Output: House { bedrooms: 3, bathrooms: 2, kitchens: 1, garages: 2 }
+In the example above, the H``ouse class is the class that represents the complex object we want to create while the HouseBuilder class is the class that is providing a step-by-step way to create instances of the House class with different configurations.
+
+
+5) The prototype pattern: In the context of the Node, a prototype design pattern is classified as a creational design pattern and allows us to create new objects based on a pre-existing object. The gist of this design pattern is to create an object as a prototype and then instantiate a new object by cloning the prototype.
+This pattern is extremely useful when we have to create multiple objects with similar properties and methods. In a Node-based ecosystem, the prototype design pattern is mostly used to create objects and implement inheritance. One of the major benefits of using prototype design patterns is that we can avoid redundant code and improve the performance of our application.
+
+6) Dependency injection: In the context of Node.js, dependency injection is a design pattern that is used to decouple application components and make them more testable and maintainable.The basic idea behind dependency injection is to remove the responsibility of creation and management of an object’s dependencies (i.e., the other objects it depends on to function) from the object itself and delegate this responsibility to an external component
+
+
+
+
+

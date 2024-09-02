@@ -1,10 +1,16 @@
 # x-api-key in header of postman for using API Key provided by AWS
 
-=============dynamo DB====================================
-All dynamo db Tables has primary key. Dynamo has manadatory primary key. Primary key has maximum 2 attributes. Primary makes the Dynamo DB faster in reading the records. Manadatory key is called partitionon/hash and optional attribute is sort/range key.
-primary key = partition key + sort key
+Advantage of Serverless:
+    1) No Server Management
+    2) Easy & Efficient scaling
+    3) High availabilty & fault tolerance.
+    4) Pay what you use
 
-=============================================================
+AWS SAM is the light weight version of Cloud formation.
+Pipeline: It defines the development cycle. It automates the deployment cycle.
+
+
+=============dynamo DB====================================
 
 =====================SQS============================================================
 Payload Size: Message payloads can contain up to 256KB of text in any format. Each 64KB ‘chunk’ of payload is billed as 1 request.
@@ -17,6 +23,13 @@ To configure the number of times that a message can be received before being sen
 The redrive policy specifies the source queue, the dead-letter queue, and the conditions under which Amazon SQS moves messages from the former to the latter if the consumer of the source queue fails to process a message a specified number of times. The maxReceiveCount is the number of times a consumer tries receiving a message from a queue without deleting it before being moved to the dead-letter queue. Setting the maxReceiveCount to a low value such as 1 would result in any failure to receive a message to cause the message to be moved to the dead-letter queue. Such failures include network errors and client dependency errors. To ensure that your system is resilient against errors, set the maxReceiveCount high enough to allow for sufficient retries.
 
 The main task of a dead-letter queue is to handle the lifecycle of unconsumed messages.
+
+Amazon SQS supports two types of queues – standard queues and FIFO queues.
+1) standard queues: Unlimited Throughput – Standard queues support a nearly unlimited number of API calls per second, per API action (SendMessage,
+Best-Effort Ordering – Occasionally, messages are delivered in an order different from which they were sent.
+
+2) FIFO queues: High Throughput – If you use batching, FIFO queues support up to 3,000 messages per second, per API method (SendMessageBatch, ReceiveMessage, or DeleteMessageBatch). The 3,000 messages per second represent 300 API calls, each with a batch of 10 messages. 
+First-In-First-Out Delivery – The order in which messages are sent and received is strictly preserved.
 ========================================================================
 
 ==============storage class in s3==============================================================================
@@ -25,6 +38,8 @@ Each object in Amazon S3 has a storage class associated with it. For example, if
 S3 Standard – The default storage class. If you don't specify the storage class when you upload an object, Amazon S3 assigns the S3 Standard storage class.
 
 S3 Intelligent-Tiering 
+
+Storage classes for archiving objects: -S3 Glacier Instant Retrieval, S3 Glacier Flexible Retrieval, and S3 Glacier Deep Archive
 ============================================================================================================
 
 ==================VM & container===============================================================================

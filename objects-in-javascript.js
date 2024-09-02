@@ -49,3 +49,25 @@ const { name } = { name: 'ranjesh' }
 
 // Destructing array
 const [item1] = [1]
+
+// getter and setter in js==============
+
+const person = {
+    firstName: "Ranjesh",
+    lastName: "Singh",
+    get fullName() {
+        return `${this.firstName}` + ` ${this.lastName}`
+
+    },
+    set setfirstName(value) {
+        this.firstName1 = value
+    }
+}
+person.setfirstName = 'Sachin'
+
+console.log(person)
+
+// Object.entries() method convert object into array
+
+let arr = Object.entries(person)
+console.log("arr:", arr.flat());

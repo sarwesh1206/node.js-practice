@@ -26,4 +26,17 @@ if ('radius' in person)
     console.log("yes",);
 
 
-// for in loop iterates over all the properties and methods of object
+// for in loop iterates over all the properties and methods of object: prototype + ownPropety
+
+// =======arguments Object
+
+// arguments is an array-like object accessible inside functions that contains the values of the arguments passed to that function.
+function sum() {
+    let sum = 0;
+    for (let val of arguments) {
+        sum = sum + val
+    }
+    return sum;
+
+}
+console.log(sum(1, 2, 3))
