@@ -1,0 +1,31 @@
+nnovative, Technical Lead with 10+ years of Full Stack Developer experience which includes 4 years as Technical Lead with wide-ranging experience driving continuous improvement in software development, and solutions architecture.
+
+• Highly proficient with JavaScript and TypeScript
+• Extensive expertise developing REST API and server applications using Node.js and Express.js
+• Strong expertise in developing Java applications
+• Extensive familiarity with ORM libraries such as Sequelize and Mongoose
+• Extensive experience with HTML, CSS, React, Angular, and Vue
+• Good experience in state management libraries like Redux, NgRx, Vuex, and Pinia
+• Experience with Unit testing, BDD, and TDD with Jest, Karma, Mocha, Jasmine, and Chai
+• Extensive familiarity with SQL and NoSQL databases, including MySQL, MongoDB, DocumentDB, and DynamoDB
+• Experienced in optimizing database query performance and creating multi-region database clusters with read replicas
+• Excellent at developing NoSQL database schemas
+• Strong experience in managing application cache with Redis and ElastiCache
+• Experienced with REST API design and development
+• Strong experience with hands-on in GraphQL development
+• Certified and good hands-on in AWS cloud native development
+• Expert in setting up high-scalable infrastructure using AWS EC2, LB, Target Group, and Auto Scaling
+• Integrated AWS SQS with various microservices for asynchronous communication
+• Implemented real-time data processing using AWS Kinesis Streams, Lambda, and AWS IoT Topics and Rules
+• Expert in Serverless Architecture, design, and development with AWS Lambda
+• Integrated AWS Lambda with other AWS services like S3, DynamoDB, SNS, SQS, API Gateway, and Step Functions
+• Created and configured AWS VPC, Subnets, Route Tables, and Internet Gateways for isolated network environments
+• Configured AWS IAM roles and policies for secure access control
+• Developed and deployed Microservices based applications in Node.js and Java
+• Applied Event-Driven Architecture for asynchronous communication between microservices
+• Hands-on experience implementing the API Gateway, Database Per Design, and Saga microservices patterns
+• Migrated monolithic applications to microservices architecture
+• Strong understanding and hands-on expertise with Containerization, Docker, and Kubernetes
+• Good hands-on and expertise in security practices for REST API security
+• Implemented JWT in REST API for stateless authentication
+• Designed and implemented Role-Based Access Control (RBAC) systems for secure access management
