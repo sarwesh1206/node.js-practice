@@ -54,3 +54,10 @@ const c = new Circle('red', 'green')
 // const c = new Circle(1)
 
 // In strict mode, global object is not modified accidently
+
+// Singleton pattern:
+
+// A Singleton is an object which can only be instantiated one time.Repeated calls to itsconstructor return the same instance and this way one can ensure that they don'taccidentally create multiple instances.
+// var object = new function() {
+//                 this.name ="Sudheer
+//             }

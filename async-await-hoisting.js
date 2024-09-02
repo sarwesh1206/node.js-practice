@@ -15,6 +15,12 @@
 // Temporal dead zone:  Time being in which variable is hoisted and value is assigned
 // We cannot access a variable when it is in the temporal dead zone.
 
+// let and const are block scoped. It means it is accessible inside the defined block  block.
+// if let & const is defined outside of any block then it will be global scope.
+// var -> function scoped. If  a variable is declared outside of any function then it will be the part of window object
+// let & const -> block scope
+
+
 // 3 ways to declare a variable: var,let & const
 
 // {
@@ -48,7 +54,7 @@ let a = 100;
     var a = 10;
     let b = 20;
     let c = 30;
-    console.log("a", a); // It will hadow value of a
+    console.log("a", a); // It will not hadow value of a. It will thow error
     console.log("b:", b);
     console.log("c:", c);
 }

@@ -177,3 +177,31 @@
 // console.log(typeof b); // number
 
 // An IIFE (Immediately Invoked Function Expression) is a JavaScript function that runs as soon as it is defined.
+
+// function sum(a) {
+//     return function (b) {
+//         return function (c) {
+//             return a + b + c;
+//         }
+//     }
+// }
+
+// console.log("sum", sum(3)(5)(9));
+
+//Data hiding and encapsulation
+function createCounter() {
+    let counter = 0;
+
+    return function () {
+        counter++;
+        return counter;
+    }
+}
+
+const counter = createCounter()
+console.log("counter1:", counter()); //1
+console.log("counter2:", counter()); //2
+console.log("counter3:", counter());//3
+
+//Factory Function
+

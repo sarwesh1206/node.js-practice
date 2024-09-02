@@ -1,0 +1,6 @@
+Purpose of useState:-
+
+    The useState Hook is used to manage state variables within a functional component, akin to how this.state works in class components. With useState, you can declare and initialize a state variable, and the Hook provides a function to update its value.
+
+Purpose of useEffect:-
+    useEffect to perform actions such as data fetching, DOM manipulation, or the establishment of subscriptions in response to component lifecycle events.

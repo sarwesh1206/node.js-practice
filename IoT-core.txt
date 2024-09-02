@@ -1,0 +1,7 @@
+#Provision Device on cloud
+1)create a thing and download certificates
+2) Attach a policy to thing. If there is no policy then create a new policy.
+3) Attach the policy to the created certificate.
+4) Attach the certificate to the thing.
+
+============Kinesis=============================

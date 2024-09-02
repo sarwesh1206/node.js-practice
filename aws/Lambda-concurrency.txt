@@ -1,0 +1,312 @@
+# Reserved concurrency and provisioned concurrency
+
+By default, your account has a concurrency limit of 1,000 concurrent executions across all functions in a Region. Your functions share this pool of 1,000 concurrency on an on-demand basis. Your functions experiences throttling (that is, they start to drop requests) if you run out of available concurrency.
+
+Reserved concurrency:Use reserved concurrency to reserve a portion of your account's concurrency for a function. This is useful if you don't want other functions taking up all the available unreserved concurrency.
+
+Provisioned concurrency: Use provisioned concurrency to pre-initialize a number of environment instances for a function. This is useful for reducing cold start latencies.
+
+If you want to guarantee that a certain amount of concurrency is available for your function at any time, use reserved concurrency.
+
+
+# Reserved concurrency
+If you want to guarantee that a certain amount of concurrency is available for your function at any time, use reserved concurrency.
+
+Reserved concurrency is the maximum number of concurrent instances that you want to allocate to your function. When you dedicate reserved concurrency to a function, no other function can use that concurrency. In other words, setting reserved concurrency can impact the concurrency pool that's available to other functions. Functions that don't have reserved concurrency share the remaining pool of unreserved concurrency.
+
+Configuring reserved concurrency counts towards your overall account concurrency limit. There is no charge for configuring reserved concurrency for a function.
+
+# Provisioned concurrency
+To mitigate cold starts, you can use provisioned concurrency.
+Using provisioned concurrency incurs additional charges to your account.
+
+Provisioned concurrency is the number of pre-initialized execution environments that you want to allocate to your function. If you set provisioned concurrency on a function, Lambda initializes that number of execution environments so that they are prepared to respond immediately to function requests.
+
+
+========================lambda Guide======================================
+AWS Lambda is a compute service that lets you run code without provisioning or managing servers.
+
+Lambda manages these resources, you cannot log in to compute instances or customize the operating system on provided runtimes.
+
+Versions
+Manage the deployment of your functions with versions, so that, for example, a new function can be used for beta testing without affecting users of the stable production version.
+
+Handler function is always the entry point to your code. When your function is invoked, Lambda runs this method
+The Lambda event object:
+
+The function handler takes two arguments, event and context. An event in Lambda is a JSON formatted document that contains data for your function to process.
+
+The Lambda context object:
+
+The second argument your function takes is context. Lambda passes the context object to your function automatically. The context object contains information about the function invocation and execution environment.
+
+ Lambda runs multiple instances of your function in parallel, governed by concurrency and scaling limits.
+ Execution environment
+
+An execution environment provides a secure and isolated runtime environment for your Lambda function. An execution environment manages the processes and resources that are required to run the function. The execution environment provides lifecycle support for the function and for any extensions associated with your function.
+
+Deployment package
+
+You deploy your Lambda function code using a deployment package. Lambda supports two types of deployment packages:
+
+A .zip file archive that contains your function code and its dependencies. Lambda provides the operating system and runtime for your function.
+
+A container image that is compatible with the Open Container Initiative (OCI) specification. You add your function code and dependencies to the image. You must also include the operating system and a Lambda runtime.
+
+#Layer:
+Layers provide a convenient way to package libraries and other dependencies that you can use with your Lambda functions. Using layers reduces the size of uploaded deployment archives and makes it faster to deploy your code. Layers also promote code sharing and separation of responsibilities so that you can iterate faster on writing business logic.
+
+You can include up to five layers per function. Layers count towards the standard Lambda deployment size quotas. When you include a layer in a function, the contents are extracted to the /opt directory in the execution environment.
+
+Functions deployed as a container image do not use layers. Instead, you package your preferred runtime, libraries, and other dependencies into the container image when you build the image.
+
+#Extension:
+you can use extensions to integrate your functions with your preferred monitoring, observability, security, and governance tools
+
+#Concurrency :
+Concurrency is the number of requests that your function is serving at any given time. When your function is invoked, Lambda provisions an instance of it to process the event. When the function code finishes running, it can handle another request. If the function is invoked again while a request is still being processed, another instance is provisioned, increasing the function's concurrency.
+
+#Qualifier:
+
+When you invoke or view a function, you can include a qualifier to specify a version or alias. A version is an immutable snapshot of a function's code and configuration that has a numerical qualifier. For example, my-function:1. An alias is a pointer to a version that you can update to map to a different version,
+
+#Destination:
+A destination is an AWS resource where Lambda can send events from an asynchronous invocation. You can configure a destination for events that fail processing. Some services also support a destination for events that are successfully processed.
+
+#Lambda execution environment lifecycle:
+Each phase starts with an event that Lambda sends to the runtime and to all registered extensions. The runtime and each extension indicate completion by sending a Next API request. Lambda freezes the execution environment when the runtime and each extension have completed and there are no pending events.
+
+    Init phase:
+    In the Init phase, Lambda performs three tasks:
+    1)Start all extensions (Extension init)
+    2)Bootstrap the runtime (Runtime init)
+    3)Run the function's static code (Function init)
+
+    2)Invoke phase
+    When a Lambda function is invoked in response to a Next API request, Lambda sends an Invoke event to the runtime and to each extension.The invoke phase ends after the runtime and all extensions signal that they are done by sending a Next API request.
+
+    Failures during the invoke phase
+    If the Lambda function crashes or times out during the Invoke phase, Lambda resets the execution environment. The following diagram illustrates Lambda execution environment behavior when there's an invoke failure:
+
+    3)Shutdown phase:
+        Duration: The entire Shutdown phase is capped at 2 seconds. If the runtime or any extension does not respond, Lambda terminates it via a signal (SIGKILL).
+
+        When the function is invoked again, Lambda thaws the environment for reuse. Reusing the execution environment has the following implications:
+
+        Objects declared outside of the function's handler method remain initialized, providing additional optimization when the function is invoked again. For example, if your Lambda function establishes a database connection, instead of reestablishing the connection, the original connection is used in subsequent invocations. We recommend adding logic in your code to check if a connection exists before creating a new one.
+
+# Implementing statelessness in functions:
+
+When writing your Lambda function code, treat the execution environment as stateless, assuming that it only exists for a single invocation. Lambda terminates execution environments every few hours to allow for runtime updates and maintenance—even for functions that are invoked continuously. Initialize any required state (for example, fetching a shopping cart from an Amazon DynamoDB table) when your function starts. This ensures that your function handles each invocation independently.
+
+#Container images
+
+Lambda provides a set of open-source base images that you can use to build your container image. To create and test container images, you can use the AWS Serverless Application Model (AWS SAM) command line interface (CLI) or native container tools such as the Docker CLI.
+
+Upload your container images to Amazon Elastic Container Registry (Amazon ECR), a managed AWS container image registry service. To deploy the image to your function, specify the Amazon ECR image URL using the Lambda console, the Lambda API, command line tools, or the AWS SDKs.
+
+Amazon Virtual Private Cloud (Amazon VPC) is a virtual network in the AWS cloud, dedicated to your AWS account. You can use Amazon VPC to create a private network for resources such as databases, cache instances, or internal services. For more information about Amazon VPC, see What is Amazon VPC?
+
+#VPC
+A Lambda function always runs inside a VPC owned by the Lambda service. Lambda applies network access and security rules to this VPC and Lambda maintains and monitors the VPC automatically. If your Lambda function needs to access the resources in your account VPC, configure the function to access the VPC. Lambda provides managed resources named Hyperplane ENIs, which your Lambda function uses to connect from the Lambda VPC to an ENI (Elastic network interface) in your account VPC.
+
+#Lambda instruction set architectures (ARM/x86)
+
+The instruction set architecture of a Lambda function determines the type of computer processor that Lambda uses to run the function. Lambda provides a choice of instruction set architectures:
+
+arm64 – 64-bit ARM architecture, for the AWS Graviton2 processor.
+
+x86_64 – 64-bit x86 architecture, for x86-based processors.
+
+Advantages of using arm64 architecture
+
+Lambda functions that use arm64 architecture (AWS Graviton2 processor) can achieve significantly better price and performance than the equivalent function running on x86_64 architecture. Consider using arm64 for compute-intensive applications such as high-performance computing, video encoding, and simulation workloads.
+
+#Event source mappings:
+To process items from a stream or queue, you can create an event source mapping. An event source mapping is a resource in Lambda that reads items from an Amazon Simple Queue Service (Amazon SQS) queue, an Amazon Kinesis stream, or an Amazon DynamoDB stream, and sends the items to your function in batches. Each event that your function processes can contain hundreds or thousands of items.
+
+#Destinations:
+A destination is an AWS resource that receives invocation records for a function. For asynchronous invocation, you can configure Lambda to send invocation records to a queue, topic, function, or event bus. You can configure separate destinations for successful invocations and events that failed processing. The invocation record contains details about the event, the function's response, and the reason that the record was sent.
+
+#Configure Lambda function memory:
+Lambda allocates CPU power in proportion to the amount of memory configured. Memory is the amount of memory available to your Lambda function at runtime. You can increase or decrease the memory and CPU power allocated to your function using the Memory setting. You can configure memory between 128 MB and 10,240 MB
+
+To find the right memory configuration for your functions, we recommend using the open source AWS Lambda Power Tuning tool. This tool uses AWS Step Functions to run multiple concurrent versions of a Lambda function at different memory allocations and measure the performance.
+
+#Configure ephemeral storage for Lambda functions:
+Lambda provides ephemeral storage for functions in the /tmp directory. This storage is temporary and unique to each execution environment. You can control the amount of ephemeral storage allocated to your function using the Ephemeral storage setting
+
+Here are several common use cases that benefit from increased ephemeral storage:
+
+Extract-transform-load (ETL) jobs: Increase ephemeral storage when your code performs intermediate computation or downloads other resources to complete processing. More temporary space enables more complex ETL jobs to run in Lambda functions.
+
+#Configure Lambda function timeout
+Lambda runs your code for a set amount of time before timing out. Timeout is the maximum amount of time in seconds that a Lambda function can run. The default value for this setting is 3 seconds, but you can adjust this in increments of 1 second up to a maximum value of 900 seconds (15 minutes).
+
+#Enable internet access for VPC-connected Lambda functions
+By default, Lambda functions run in a Lambda-managed VPC that has internet access. To access resources in a VPC in your account, you can add a VPC configuration to a function. This restricts the function to resources within that VPC, unless the VPC has internet access. This page explains how to provide internet access to VPC-connected Lambda functions.
+
+#Lambda function aliases:
+You can create aliases for your Lambda function. A Lambda alias is a pointer to a function version that you can update. The function's users can access the function version using the alias Amazon Resource Name (ARN).
+
+#Alias routing configuration
+
+Use routing configuration on an alias to send a portion of traffic to a second function version. For example, you can reduce the risk of deploying a new version by configuring the alias to send most of the traffic to the existing version, and only a small percentage of traffic to the new version.
+
+You can point an alias to a maximum of two Lambda function versions.
+The alias cannot point to $LATEST.
+
+#Determining which version has been invoked
+When you configure traffic weights between two function versions, there are two ways to determine the Lambda function version that has been invoked:
+1) CloudWatch Logs:
+2) Response payload (synchronous invocations): 
+
+#Types of policy:
+
+1)resource-based policy: Lambda supports resource-based permissions policies for Lambda functions and layers. Resource-based policies let you grant usage permission to other AWS accounts or organizations on a per-resource basis. You also use a resource-based policy to allow an AWS service to invoke your function on your behalf.
+https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html
+
+2)identity-based policy: You can use identity-based policies in AWS Identity and Access Management (IAM) to grant users in your account access to Lambda. Identity-based policies can apply to users directly, or to groups and roles that are associated with a user. You can also grant users in another account permission to assume a role in your account and access your Lambda resources. 
+https://docs.aws.amazon.com/lambda/latest/dg/access-control-identity-based.html
+
+#Execution role:
+A Lambda function's execution role is an AWS Identity and Access Management (IAM) role that grants the function permission to access AWS services and resources. For example, you might create an execution role that has permission to send logs to Amazon CloudWatch and upload trace data to AWS X-Ray. This page provides information on how to create, view, and manage a Lambda function's execution role.
+You provide an execution role when you create a function
+
+https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html
+
+#Response Streaming:
+You can configure your Lambda function URLs to stream response payloads back to clients. Response streaming can benefit latency sensitive applications by improving time to first byte (TTFB) performance. This is because you can send partial responses back to the client as they become available. Additionally, you can use response streaming to build functions that return larger payloads. Response stream payloads have a soft limit of 20 MB as compared to the 6 MB limit for buffered responses. Streaming a response also means that your function doesn’t need to fit the entire response in memory. For very large responses, this can reduce the amount of memory you need to configure for your function.
+
+The speed at which Lambda streams your responses depends on the response size. The streaming rate for the first 6MB of your function’s response is uncapped. For responses larger than 6MB, the remainder of the response is subject to a bandwidth cap. For more information on streaming bandwidth
+
+#Deploying Lambda functions
+You can deploy code to your Lambda function by uploading a zip file archive, or by creating and uploading a container image.
+    1)Container images:
+    You can package your code and dependencies as a container image using tools such as the Docker command line interface (CLI). You can then upload the image to your container registry hosted on Amazon Elastic Container Registry (Amazon ECR).
+    When you invoke the function, Lambda deploys the container image to an execution environment.
+
+    Lambda supports only Linux-based container images.
+
+#Testing Lambda container images locally
+You can use the Lambda runtime interface emulator to locally test a container image function before uploading it to Amazon Elastic Container Registry (Amazon ECR) and deploying it to Lambda. The emulator is a proxy for the Lambda runtime API. It's a lightweight web server that converts HTTP requests into JSON events to pass to the Lambda function in the container image.
+
+#Understanding Lambda function invocation methods:
+When you invoke a function, you can choose to invoke it synchronously or asynchronously. With synchronous invocation, you wait for the function to process the event and return a response. With asynchronous invocation, Lambda queues the event for processing and returns a response immediately. The InvocationType request parameter in the Invoke API determines how Lambda invokes your function. A value of RequestResponse indicates synchronous invocation, and a value of Event indicates asynchronous invocation.
+
+If the function invocation results in an error, for synchronous invocations, view the error message in the response and retry the invocation manually. For asynchronous invocations, Lambda handles retries automatically and can send invocation records to a destination.
+
+Several AWS services, such as Amazon Simple Storage Service (Amazon S3) and Amazon Simple Notification Service (Amazon SNS), invoke functions asynchronously to process events. When you invoke a function asynchronously, you don't wait for a response from the function code. You hand off the event to Lambda and Lambda handles the rest. You can configure how Lambda handles errors, and can send invocation records to a downstream resource such as Amazon Simple Queue Service (Amazon SQS) or Amazon EventBridge (EventBridge) to chain together components of your application.
+
+For asynchronous invocation, Lambda places the event in a queue and returns a success response without additional information. A separate process reads events from the queue and sends them to your function.
+
+Lambda manages the function's asynchronous event queue and attempts to retry on errors. If the function returns an error, Lambda attempts to run it two more times, with a one-minute wait between the first two attempts, and two minutes between the second and third attempts
+
+If the function doesn't have enough concurrency available to process all events, additional requests are throttled. For throttling errors (429)
+
+#Configuring destinations for asynchronous invocation:
+To retain records of asynchronous invocations, add a destination to your function. You can choose to send either successful or failed invocations to a destination. Each function can have multiple destinations, so you can configure separate destinations for successful and failed events. Each record sent to the destination is a JSON document with details about the invocation. Like error handling settings, you can configure destinations on a function, function version, or alias.
+
+#Dead-letter queues
+As an alternative to an on-failure destination, you can configure your function with a dead-letter queue to save discarded events for further processing. A dead-letter queue acts the same as an on-failure destination in that it is used when an event fails all processing attempts.
+You can choose an Amazon SQS standard queue or Amazon SNS standard topic for your dead-letter queue. FIFO queues and Amazon SNS FIFO topics are not supported. 
+
+#Event source mapping
+An event source mapping is a Lambda resource that reads items from stream and queue-based services and invokes a function with batches of records. The following services use event source mappings to invoke Lambda functions:
+Amazon DynamoDB
+Amazon Kinesis
+
+#How event source mappings differ from direct triggers:
+    Some AWS services can directly invoke Lambda functions using triggers. These services push events to Lambda, and the function is invoked immediately when the specified event occurs. Triggers are suitable for discrete events and real-time processing. When you create a trigger using the Lambda console, the console interacts with the corresponding AWS service to configure the event notification on that service. The trigger is actually stored and managed by the service that generates the events, not by Lambda. Here are some examples of services that use triggers to invoke Lambda functions:
+    Amazon Simple Storage Service (Amazon S3):
+    Amazon Simple Notification Service (Amazon SNS):
+    Amazon API Gateway:
+
+    Event source mappings are Lambda resources created and managed within the Lambda service. Event source mappings are designed for processing high-volume streaming data or messages from queues. Processing records from a stream or queue in batches is more efficient than processing records individually
+
+#Batching behavior:
+    By default, an event source mapping batches records together into a single payload that Lambda sends to your function. To fine-tune batching behavior, you can configure a batching window (MaximumBatchingWindowInSeconds) and a batch size (BatchSize). A batching window is the maximum amount of time to gather records into a single payload. A batch size is the maximum number of records in a single batch.
+
+
+#How AWS Lambda works with IAM
+ IAM is used to manage access to Lambda.
+ 1)Identity-based policies for Lambda:
+ Identity-based policies are JSON permissions policy documents that you can attach to an identity, such as an IAM user, group of users, or role. These policies control what actions users and roles can perform, on which resources, and under what conditions.
+
+ 2)Resource-based policies within Lambda:
+ Resource-based policies are JSON policy documents that you attach to a resource. Examples of resource-based policies are IAM role trust policies and Amazon S3 bucket policies. In services that support resource-based policies, service administrators can use them to control access to a specific resource.
+  Principals can include accounts, users, roles, federated users, or AWS services.
+  To enable cross-account access, you can specify an entire account or IAM entities in another account as the principal in a resource-based policy
+
+  3)ACLs in Lambda
+    Access control lists (ACLs) control which principals (account members, users, or roles) have permissions to access a resource. ACLs are similar to resource-based policies, although they do not use the JSON policy document format.
+    Lambda does not support ACLs.
+
+   4)Using temporary credentials with Lambda:
+   You are using temporary credentials if you sign in to the AWS Management Console using any method except a user name and password. For example, when you access AWS using your company's single sign-on (SSO) link, that process automatically creates temporary credentials. You also automatically create temporary credentials when you sign in to the console as a user and then switch roles. For more information about switching roles, see Switching to a role (console) in the IAM User Guide.     
+
+    #Identity-based policy examples for AWS Lambda
+    By default, users and roles don't have permission to create or modify Lambda resources. They also can't perform tasks by using the AWS Management Console, AWS Command Line Interface (AWS CLI), or AWS API. To grant users permission to perform actions on the resources that they need, an IAM administrator can create IAM policies. The administrator can then add the IAM policies to roles, and users can assume the roles.
+
+    #AWS managed policies for AWS Lambda:
+    An AWS managed policy is a standalone policy that is created and administered by AWS. AWS managed policies are designed to provide permissions for many common use cases so that you can start assigning permissions to users, groups, and roles.
+
+    #Securing Lambda 
+    Lambda functions must not be publicly accessible.
+    Lambda functions must be attached to a VPC.
+    Lambda functions should not use deprecated runtimes.
+    Lambda environment variables must be encrypted at rest with a customer managed key.
+
+# Monitoring and troubleshooting Lambda functions:
+    AWS Lambda integrates with other AWS services to help you monitor and troubleshoot your Lambda functions. Lambda automatically monitors Lambda functions on your behalf and reports metrics through Amazon CloudWatch. To help you monitor your code when it runs, Lambda automatically tracks the number of requests, the invocation duration per request, and the number of requests that result in an error.
+
+    *) Types of monitoring graphs
+        Lambda monitoring graphs
+    Invocations – The number of times that the function was invoked.
+    Duration – The average, minimum, and maximum amount of time your function code spends processing an event.
+    Error count and success rate (%) – The number of errors and the percentage of invocations that completed without error.
+    Throttles – The number of times that an invocation failed due to concurrency limits.
+    IteratorAge – For stream event sources, the age of the last item in the batch when Lambda received it and invoked the function.
+    Async delivery failures – The number of errors that occurred when Lambda attempted to write to a destination or dead-letter queue.
+    Concurrent executions – The number of function instances that are processing events.
+
+    When your AWS Lambda function finishes processing an event, Lambda sends metrics about the invocation to Amazon CloudWatch. There is no charge for these metrics.
+
+    On the CloudWatch console, you can build graphs and dashboards with these metrics. You can set alarms to respond to changes in utilization, performance, or error rates. Lambda sends metric data to CloudWatch in 1-minute intervals.
+    Charges apply for custom metrics and CloudWatch alarms.
+
+    System logs are the logs that Lambda generates and are sometimes known as platform event logs.
+
+#Default log formats:
+        Currently, the default log format for all Lambda runtimes is plain text.
+    If you change your function's log format to JSON and do not set log level, then Lambda automatically sets your function's application log level and system log level to INFO. 
+    This means that Lambda sends only log outputs of level INFO and lower to CloudWatch Logs.
+
+    If the "level" value field is invalid or missing, Lambda will assign the log output the level INFO.
+
+    When you select a log level, Lambda sends logs at that level and lower to CloudWatch Logs. For example, if you set a function’s application log level to WARN, Lambda doesn’t send log outputs at the INFO and DEBUG levels. The default application log level for log filtering is INFO.
+
+    CloudWatch Lambda Insights is a monitoring and troubleshooting solution for serverless applications running on AWS Lambda. The solution collects, aggregates, and summarizes system-level metrics including CPU time, memory, disk and network usage. It also collects, aggregates, and summarizes diagnostic information such as cold starts and Lambda worker shutdowns to help you isolate issues with your Lambda functions and resolve them quickly.
+
+#How Lambda Insights monitors serverless applications:
+    CloudWatch Lambda Insights is a monitoring and troubleshooting solution for serverless applications running on AWS Lambda. The solution collects, aggregates, and summarizes system-level metrics including CPU time, memory, disk and network usage. It also collects, aggregates, and summarizes diagnostic information such as cold starts and Lambda worker shutdowns to help you isolate issues with your Lambda functions and resolve them quickly.
+
+
+
+
+
+
+
+Reference:
+https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html
+https://repost.aws/knowledge-center/lambda-function-idempotent
+
+
+================================================================cognito=======================================================
+The purpose of the access token is to authorize API operations.
+For example, you can use the access token to grant your user access to add, change, or delete user attributes.
+
+You can use the refresh token to retrieve new ID and access tokens. By default, the refresh token expires 30 days after your application user signs into your user pool.
+tata helpline no: 18001207777
+
+=============================================================================================================

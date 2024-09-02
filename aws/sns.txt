@@ -39,3 +39,28 @@ The Amazon SQS service is unavailable.
 Amazon SQS fails to process a valid request from the Amazon SNS service.
 
 When server-side errors occur, Amazon SNS FIFO topics retry the failed deliveries up to 100,015 times over 23 days. For more information, see Amazon SNS message delivery retries.
+
+
+#Difference Between SNS & SQS:
+
+# SNS:
+
+Amazon's SNS is a fully managed publish and subscribe service. You can have many publishers and many subscribers to a topic.
+SNS allows standard topics or FIFO topics. FIFO topics have a message ordering and standard topics don't.
+In SNS however, no persistence exists. There is no guarantee that the message will be delivered. If a consumer is not available the message won't be delivered.
+SNS doesn't offer retries when the client fails
+SNS only works on one message at a time, so no batching is possible.
+
+#SQS:
+Amazon SQS is a fully managed distributed queueing service. SQS is poll-based and not push-based. 
+The message remains in the queue for a defined time. Consumers can pick up the messages on their schedule by checking the queue if any new messages are available.
+Dead letter queues (DLQ) are used to handle messages with errors.
+SQS has a many-to-one relationship. You can send messages to a queue from many different producers but only one consumer can be defined.
+SQS is reliable.
+SQS can add a Redrive Policy
+SQS allows you to batch multiple messages together into one
+
+
+
+Push and poll-based
+Many-to-many vs. many-to-one (Number of Consumers)

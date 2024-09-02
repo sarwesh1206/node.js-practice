@@ -1,10 +1,14 @@
-// // let stringsArr = ["a", "A", "b"];
+// let stringsArr = ["a", "A", "b"];
 
-// // stringsArr.sort((a, b) => {
-// //     return a.toLowerCase() < b.toLowerCase() ? 1 : -1
-// // })
-
-
+// let res = stringsArr.sort((a, b) => {
+//     return a.toLowerCase() < b.toLowerCase() ? -1 : 1
+// })
+// console.log("res:", res);
+let arr1 = [4, 3, 9, 1, 2]
+res = arr1.sort((a, b) => {
+    return a < b ? 1 : -1
+})
+console.log("res:", res);
 // // console.log("stringsArr:", stringsArr); // output:  [ 'a', 'A', 'b' ]
 
 // // let courses = [{ id: 1, name: "QJava" }, { id: 2, name: "nava" }]
@@ -32,21 +36,21 @@
 
 // // check slice and splice method
 
-// // const arr = [1, 2, 3, 4, 1]
-// // console.log(arr.indexOf(1));
+const arr = [1, 2, 3, 4, 1]
+// console.log(arr.indexOf(9));
 // // console.log(arr.indexOf('a'));
-// // console.log(arr.lastIndexOf(1));
+// console.log(arr.lastIndexOf(1));
 // // console.log(arr.lastIndexOf(6));
-// // console.log(arr.includes(6));
+console.log(arr.includes(6));
 
 
 
-// let courses = [{ id: 1, name: "QJava" }, { id: 2, name: "nava" }]
-// let cc = courses.findIndex((course) => {
-//     return course.name === 'nava'
-// })
+let courses = [{ id: 1, name: "QJava" }, { id: 2, name: "nava" }]
+let cc = courses.findIndex((course) => {
+    return course.name === 'nava'
+})
 
-// console.log("cc:", cc);
+console.log("cc:", cc);
 
 
 
@@ -71,12 +75,12 @@
 
 // const first = [1, 2, 3]
 // let res = first.join('-')
-// console.log("res:", res); 
+// console.log("res:", res);
 
 
-const first = [1, 2, 3]
-const atLeastOnePositive = first.some(val => {
-    return val > 0
-})
+// const first = [1, 2, 3]
+// const atLeastOnePositive = first.some(val => {
+//     return val > 0
+// })
 
-console.log("allPositive: ", atLeastOnePositive);
+// console.log("allPositive: ", atLeastOnePositive);

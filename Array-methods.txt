@@ -104,7 +104,7 @@ const last = nums.pop()
 // remove from begining
 // const first = nums.shift()
 
-// remove from begining
+// remove at the middle
 nums.splice(2, 1)
 
 =======================empty an Array====================
@@ -161,7 +161,7 @@ console.log("", cc);
 // console.log("", cc);
 
 const nums = [6, 9]
-let cc = { ...nums }
+let cc = { ...nums } // convert array to object.
 
 
 =============================================
