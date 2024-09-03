@@ -1,0 +1,52 @@
+there a plenty topics
+Null Coalescing
+Optional Chaining
+Maps
+Sets
+Symbols
+Generators And Iterators
+Object Getters And Setters
+Bind
+Call And Apply
+ES Updates
+Polyfill
+Transpile And Babel
+Bundlers
+Prototypes
+Class Basics
+Class Inheritance
+Public, Private, And Protected Properties
+Functional Programming
+Pure Functions
+Immutability
+Higher Order Functions
+Function Composition
+Currying
+Security
+NPM Audit
+Cross Site Scripting
+Sanitize User Input
+Cookies
+Clean Code
+Clean Code Basics
+Code Order
+When To Use Comments
+Coupling And Cohesion
+Facade Pattern
+Guard Clauses
+Composition Vs Inheritance
+Don't Repeat Yourself
+Testing
+Testing
+Advanced Debugging
+Jest Basics
+Types Of Tests
+Jest With ES6 Modules
+BROWSERS AND RUNTYM
+If you want more advanced and go deeper 😅
+Asynchronous Generators
+Web Workers
+Service Workers
+Memory Management and Performance
+Concurrency and Parallelism
+Reactive Programming and Observables
